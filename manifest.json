@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"name": "Wadjetz Bookmarks",
+	"version": "1.0",
+	"description": "Gestionaire de favoris",
+	"icons": {
+		"16"  : "img/icon16.png",
+        "48"  : "img/icon48.png",
+        "128" : "img/icon128.png"
+    },
+	"permissions": [
+		"tabs",
+    	"http://bookmarks-wadjetz.rhcloud.com/",
+    	"http://localhost:9000/"
+  	],
+	"browser_action": {
+		"default_icon" : "img/icone.png",
+		"default_popup": "bookmarks.html"
+	},
+	"content_security_policy": "script-src 'self' 'unsafe-eval' ; object-src 'self'"
+}
