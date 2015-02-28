@@ -1,0 +1,28 @@
+{
+  "name": "bookmarks-chrome",
+  "version": "1.0.0",
+  "description": "Bookmarks Manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t reactify js/main.js -o build/main.js",
+    "watch": "watchify -t reactify js/main.js -o build/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://Wadjetz@bitbucket.org/Wadjetz/bookmarks-chrome.git"
+  },
+  "keywords": [
+    "bookmarks"
+  ],
+  "author": "Wadjetz",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^2.1.3",
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "reactify": "^1.0.0",
+    "watchify": "^2.4.0"
+  }
+}
