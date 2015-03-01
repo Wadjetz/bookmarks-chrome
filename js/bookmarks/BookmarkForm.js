@@ -1,7 +1,8 @@
 var React = require('react');
-var FormInput = require('../form/FormInput');
-var FormTextArea = require('../form/FormTextArea');
+var Input = require('../form/Input');
+var TextArea = require('../form/TextArea');
 var BookmarksService = require('../services/bookmarks-service');
+var BookmarkKeywords = require('./BookmarkKeywords');
 
 var styleForm = {
     width: "100%",
@@ -21,14 +22,11 @@ var savedStyle = {
     width: '100%',
     padding: 4,
     backgroundColor: 'red'
-}
+};
 
 
 var BookmarkForm = React.createClass({
-
-    // Set states
     getInitialState: function() {
-        console.log("getInitialState url=", this.props.url, "title", this.props.title);
         return {
             url: "",
             title: "",
@@ -66,9 +64,10 @@ var BookmarkForm = React.createClass({
         return (
             <div style={styleForm}>
                 <div>{this.state.isExist}</div>
-                <FormInput ref="url" value={this.state.url} update={this.update} />
-                <FormInput ref="title" value={this.state.title} update={this.update} />
-                <FormTextArea ref="description" value={this.state.description} update={this.update} />
+                <Input ref="url" value={this.state.url} update={this.update} />
+                <Input ref="title" value={this.state.title} update={this.update} />
+                <TextArea ref="description" value={this.state.description} update={this.update} />
+                <BookmarkKeywords />
                 <input type="button" value="Save" style={styleButtonSave} onClick={this.save}/>
             </div>
         );

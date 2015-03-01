@@ -2,11 +2,19 @@ var React = require('react');
 var Bookmark = require('./Bookmark');
 var BookmarksService = require('../services/bookmarks-service');
 
+var style = {
+    width: '49%',
+    margin: 3,
+    verticalAlign: 'top',
+    display: 'inline-block'
+};
+
 var BookmarkList = React.createClass({
 
     getInitialState: function () {
         return {
-            bookmarks: []
+            bookmarks: [],
+            bookmarksRecents: []
         };
     },
 
@@ -16,11 +24,21 @@ var BookmarkList = React.createClass({
                 bookmarks: res
             });
         }.bind(this));
+        BookmarksService.getRecentsBookmarks(function (res) {
+            this.setState({
+                bookmarksRecents: res
+            });
+        }.bind(this));
     },
 
     render: function () {
-        var bookmarks = this.state.bookmarks;
-        var bookmarkList = bookmarks.map(function (bookmark) {
+        var bookmarkList = this.state.bookmarks.map(function (bookmark) {
+            return (
+                <Bookmark bookmark={bookmark} key={bookmark._id} />
+            );
+        });
+
+        var bookmarkListRecents = this.state.bookmarksRecents.map(function (bookmark) {
             return (
                 <Bookmark bookmark={bookmark} key={bookmark._id} />
             );
@@ -28,7 +46,12 @@ var BookmarkList = React.createClass({
 
         return (
             <div>
-                {bookmarkList}
+                <div style={style}>
+                    {bookmarkList}
+                </div>
+                <div style={style}>
+                    {bookmarkListRecents}
+                </div>
             </div>
         );
     }

@@ -30,13 +30,27 @@ var App = React.createClass({
 			<div style={style}>
                 {(function () {
                     if (this.state.isConnected === false) {
-                        return (<Login />);
+                        return (<Login login={this.login} />);
                     } else {
 				        return (<BookmarkBox />);
                     }
                 }.bind(this)())}
 			</div>
         );
+    },
+    login: function (login, password) {
+        console.log("main login", login, "password", password);
+        BookmarksService.login({
+            login: login,
+            password: password,
+        }, function (res) {
+            console.log("login", res);
+            if (res.error === false) {
+                this.setState({
+                    isConnected: true
+                });
+            }
+        }.bind(this));
     }
 });
 

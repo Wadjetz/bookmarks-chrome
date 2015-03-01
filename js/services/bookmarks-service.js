@@ -29,6 +29,19 @@ module.exports.save = function (bookmark, callback) {
     });
 };
 
+module.exports.getKeywords = function (callback) {
+	$.ajax({
+		type: 'GET',
+		url: apiUrl + '/api/secure/bookmarks/get/keywords',
+		success: function(data) {
+			callback(data);
+		},
+		error: function(xhr, status, err) {
+			callback(null, err);
+		}
+	});
+};
+
 module.exports.clicked = function (id, callback) {
 	$.ajax({
 		type: 'PUT',
@@ -46,6 +59,20 @@ module.exports.isConnected = function (callback) {
 	$.ajax({
 		type: 'GET',
 		url: apiUrl + '/api/users/connected',
+		success: function(data) {
+			callback(data);
+		},
+		error: function(xhr, status, err) {
+			callback(null, err);
+		}
+	});
+};
+
+module.exports.login = function (user, callback) {
+	$.ajax({
+		type: 'POST',
+		url: apiUrl + '/api/users/login',
+		data: user,
 		success: function(data) {
 			callback(data);
 		},

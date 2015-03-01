@@ -8,7 +8,7 @@ var style = {
     display: 'inline-block'
 };
 
-var FormTextArea = React.createClass({
+var TextArea = React.createClass({
     render: function () {
         return (
             <textarea onChange={this.props.update} style={style} />
@@ -16,4 +16,4 @@ var FormTextArea = React.createClass({
     }
 });
 
-module.exports = FormTextArea;
+module.exports = TextArea;

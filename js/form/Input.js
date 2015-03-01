@@ -8,7 +8,7 @@ var style = {
     float: 'inline-block'
 };
 
-var FormInput = React.createClass({
+var Input = React.createClass({
     render: function () {
         return (
             <input {...this.props} type="text" onChange={this.props.update} style={style} />
@@ -16,4 +16,4 @@ var FormInput = React.createClass({
     }
 });
 
-module.exports = FormInput;
+module.exports = Input;
