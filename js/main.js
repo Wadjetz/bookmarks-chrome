@@ -1,85 +1,58 @@
+var React = require('react');
+var Login = require('./user/Login');
+var BookmarkBox = require('./bookmarks/BookmarkBox');
+var BookmarksService = require('./services/bookmarks-service');
 
-var BookmarksChromeApp = angular.module('BookmarksChromeApp', ['BookmarksServiceModule']);
+var style = {
+    width: 700,
+	overflowY: 'scroll'
+};
 
-BookmarksChromeApp.controller('BookmarksCtrl', ['$scope', 'BookmarksService', function ($scope, BookmarksService) {
-	$scope.connection = false;
-	$scope.login = "";
-	$scope.password = "";
+var App = React.createClass({
+    getInitialState: function () {
+        return {
+            user: '',
+            isConnected: false
+        };
+    },
 
-	$scope.succes = false;
-	$scope.exist = false;
+    componentWillMount: function () {
+        BookmarksService.isConnected(function (res) {
+            console.log("isConnected", res);
+            this.setState({
+                isConnected: res.connected
+            });
+        }.bind(this));
+    },
 
-	BookmarksService.isConected().then(function (response) {
-		$scope.connection = true;
-	}, function (response) {
-		$scope.connection = false;
-	});
-
-	BookmarksService.getCurrentUrl(function (url, title) {
-		$scope.url = url;
-		$scope.title = title;
-
-		BookmarksService.getUrlByUrl(url).then(function (response) {
-			if (response.data.bookmark != null) {
-				$scope.exist = true;
-			} else {
-				$scope.exist = false;
-			}
-		});
-		
-	});
-
-	BookmarksService.getKeywords().then(function (keywordsList) {
-		$scope.keywordsList = keywordsList;
-	}, function (err) {
-		$scope.keywordsList = ['chrome'];
-	})
-	
-
-	$scope.loginSubmit = function () {
-		if ($scope.formLogin.$valid) {
-			BookmarksService.connection($scope.login, $scope.password).then(function (response) {
-				console.log(response);
-				if (response.error != undefined && response.error == false) {
-					$scope.message = "";
-					$scope.connection = true;
-				} else {
-					$scope.message = response.message;
-				}
-			}, function (response) {
-				if (response.error != undefined && response.error == true) {
-					$scope.message = response.message;
-				} else {
-					$scope.message = response;
-				}
-			});
-		}
-	};
-
-	$scope.createBookmarks = function () {
-		var formBookmarkData = {
-			url         : $scope.url,
-			title       : $scope.title,
-			description : $scope.description,
-			keywords    : $scope.newKeyword
-		};
-		console.log(formBookmarkData);
-
-		if (formBookmarkData.keywords == "") {
-			formBookmarkData.keywords = "AAA";
-		}
-
-		if ($scope.formBookmarks.$valid) {
-			BookmarksService.create(formBookmarkData).then(function (response) {
-				$scope.succes = true;
-				console.log(response);
-				//$scope.message = response;
-			}, function (response) {
-				console.log(response);
-				//$scope.message = response;
-			});
-		}
-	};
-}]);
+    render: function () {
+        return (
+			<div style={style}>
+                {(function () {
+                    if (this.state.isConnected === false) {
+                        return (<Login login={this.login} />);
+                    } else {
+				        return (<BookmarkBox />);
+                    }
+                }.bind(this)())}
+			</div>
+        );
+    },
+    login: function (login, password) {
+        console.log("main login", login, "password", password);
+        BookmarksService.login({
+            login: login,
+            password: password,
+        }, function (res) {
+            console.log("login", res);
+            if (res.error === false) {
+                this.setState({
+                    isConnected: true
+                });
+            }
+        }.bind(this));
+    }
+});
 
 
+React.render(<App />, document.body);
