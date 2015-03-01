@@ -10,7 +10,7 @@ var BookmarkList = React.createClass({
         };
     },
 
-    componentDidMount: function () {
+    componentWillMount: function () {
         BookmarksService.getBookmarks(function (res) {
             this.setState({
                 bookmarks: res

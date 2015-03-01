@@ -3,6 +3,12 @@ var $ = require('jquery');
 var apiUrl = "http://bookmarks-wadjetz.rhcloud.com";
 
 module.exports.getBookmarks = function (callback) {
+	$.get(apiUrl + '/api/secure/bookmarks', function(res) {
+		callback(res);
+	});
+};
+
+module.exports.getRecentsBookmarks = function (callback) {
 	$.get(apiUrl + '/api/secure/bookmarks?order=recents', function(res) {
 		callback(res);
 	});
@@ -23,3 +29,19 @@ module.exports.save = function (bookmark, callback) {
       	}
     });
 };
+
+module.exports.isExist = function (url, callback) {
+	$.ajax({
+		type: 'GET',
+      	url: apiUrl + '/api/secure/bookmarks/by/url',
+      	data: {
+			url: url
+		},
+      	success: function(data) {
+        	callback(data);
+      	},
+      	error: function(xhr, status, err) {
+        	callback(err, status);
+      	}
+    });
+}

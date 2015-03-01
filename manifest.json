@@ -10,6 +10,7 @@
     },
 	"permissions": [
 		"tabs",
+		"storage",
     	"http://bookmarks-wadjetz.rhcloud.com/",
     	"http://localhost:9000/"
   	],

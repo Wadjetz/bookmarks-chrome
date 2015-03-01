@@ -10,8 +10,8 @@ var style = {
 
 var FormInput = React.createClass({
     render: function () {
-        return this.transferPropsTo(
-            <input type="text" onChange={this.props.update} style={style} />
+        return (
+            <input {...this.props} type="text" onChange={this.props.update} style={style} />
         );
     }
 });

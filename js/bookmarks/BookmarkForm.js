@@ -17,6 +17,13 @@ var styleButtonSave = {
     display: 'inline-block'
 };
 
+var savedStyle = {
+    width: '100%',
+    padding: 4,
+    backgroundColor: 'red'
+}
+
+
 var BookmarkForm = React.createClass({
 
     // Set states
@@ -25,7 +32,8 @@ var BookmarkForm = React.createClass({
         return {
             url: "",
             title: "",
-            description: ""
+            description: "",
+            isExist: "No Saved"
         };
     },
 
@@ -35,6 +43,14 @@ var BookmarkForm = React.createClass({
                 url: tabs[0].url,
                 title: tabs[0].title
             });
+            BookmarksService.isExist(tabs[0].url, function (res) {
+                console.log("isExist", res.bookmark);
+                if (res.bookmark !== null) {
+                    this.setState({
+                        isExist: "Saved"
+                    });
+                }
+            }.bind(this));
         }.bind(this));
     },
 
@@ -49,6 +65,7 @@ var BookmarkForm = React.createClass({
     render: function () {
         return (
             <div style={styleForm}>
+                <div>{this.state.isExist}</div>
                 <FormInput ref="url" value={this.state.url} update={this.update} />
                 <FormInput ref="title" value={this.state.title} update={this.update} />
                 <FormTextArea ref="description" value={this.state.description} update={this.update} />
@@ -61,14 +78,16 @@ var BookmarkForm = React.createClass({
         BookmarksService.save({
             url: this.refs.url.getDOMNode().value.trim(),
             title: this.refs.title.getDOMNode().value.trim(),
-            description: this.refs.description.getDOMNode().value.trim()
+            description: this.refs.description.getDOMNode().value.trim(),
+            keywords: "A"
         }, function (res) {
             console.log("Save res = ", res);
             if (res.error === false) {
                 this.setState({
                     url: "",
                     title: "",
-                    description: ""
+                    description: "",
+                    isExist: "Saved"
                 });
             }
         }.bind(this));
