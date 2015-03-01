@@ -1,6 +1,6 @@
 var React = require('react');
 var Bookmark = require('./Bookmark');
-var $ = require('jquery');
+var BookmarksService = require('../services/bookmarks-service');
 
 var BookmarkList = React.createClass({
 
@@ -11,7 +11,7 @@ var BookmarkList = React.createClass({
     },
 
     componentDidMount: function () {
-        $.get('http://localhost:8888/api/secure/bookmarks?order=recents', function(res) {
+        BookmarksService.getBookmarks(function (res) {
             this.setState({
                 bookmarks: res
             });
@@ -22,7 +22,7 @@ var BookmarkList = React.createClass({
         var bookmarks = this.state.bookmarks;
         var bookmarkList = bookmarks.map(function (bookmark) {
             return (
-                <Bookmark bookmark={bookmark} />
+                <Bookmark bookmark={bookmark} key={bookmark._id} />
             );
         });
 
