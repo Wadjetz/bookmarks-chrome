@@ -14,7 +14,6 @@ module.exports.getRecentsBookmarks = function (callback) {
 	});
 };
 
-
 module.exports.save = function (bookmark, callback) {
 	$.ajax({
 		type: 'POST',
@@ -25,9 +24,35 @@ module.exports.save = function (bookmark, callback) {
         	callback(data);
       	},
       	error: function(xhr, status, err) {
-        	callback(err, status);
+        	callback(null, err, status);
       	}
     });
+};
+
+module.exports.clicked = function (id, callback) {
+	$.ajax({
+		type: 'PUT',
+		url: apiUrl + '/api/secure/bookmarks/click/' + id,
+		success: function(data) {
+			callback(data);
+		},
+		error: function(xhr, status, err) {
+			callback(null, err);
+		}
+	});
+};
+
+module.exports.isConnected = function (callback) {
+	$.ajax({
+		type: 'GET',
+		url: apiUrl + '/api/users/connected',
+		success: function(data) {
+			callback(data);
+		},
+		error: function(xhr, status, err) {
+			callback(null, err);
+		}
+	});
 };
 
 module.exports.isExist = function (url, callback) {
@@ -41,7 +66,7 @@ module.exports.isExist = function (url, callback) {
         	callback(data);
       	},
       	error: function(xhr, status, err) {
-        	callback(err, status);
+        	callback(null, err, status);
       	}
     });
-}
+};

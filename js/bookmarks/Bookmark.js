@@ -1,4 +1,5 @@
 var React = require('react');
+var BookmarksService = require('../services/bookmarks-service');
 
 var titleStyle = {
     fontSize: '1em',
@@ -24,6 +25,9 @@ var Bookmark = React.createClass({
         );
     },
     open: function () {
+        BookmarksService.clicked(this.props.bookmark._id, function (res) {
+            console.log(res);
+        });
         chrome.tabs.create({
             url: this.props.bookmark.url
         });
