@@ -1,6 +1,7 @@
 var $ = require('jquery');
 
 var apiUrl = "http://bookmarks-wadjetz.rhcloud.com";
+//apiUrl = "http://localhost:8888";
 
 module.exports.getBookmarks = function (callback) {
 	$.get(apiUrl + '/api/secure/bookmarks', function(res) {

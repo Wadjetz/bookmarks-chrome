@@ -11,7 +11,14 @@ var style = {
 var TextArea = React.createClass({
     render: function () {
         return (
-            <textarea onChange={this.props.update} style={style} />
+            <div {...this.props}>
+                <label>{this.props.label}</label>
+                <textarea
+                    ref="val"
+                    value={this.props.value}
+                    onChange={this.props.update}
+                    style={style} />
+            </div>
         );
     }
 });

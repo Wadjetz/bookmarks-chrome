@@ -1,8 +1,9 @@
 var React = require('react');
 var Input = require('../form/Input');
 var TextArea = require('../form/TextArea');
+var Select = require('../form/Select');
 var BookmarksService = require('../services/bookmarks-service');
-var BookmarkKeywords = require('./BookmarkKeywords');
+var BrowserService = require('../services/browser-service');
 
 var styleForm = {
     width: "100%",
@@ -31,17 +32,20 @@ var BookmarkForm = React.createClass({
             url: "",
             title: "",
             description: "",
+            keyword: "A",
+            keywordsList: [],
             isExist: "No Saved"
         };
     },
 
     componentWillMount: function () {
-        chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+        BrowserService.getTabInfo(function (url, title) {
+            console.log("BookmarkForm", "CWM", "ChromeServ", "getTabInfo", "url=", url, "title=", title);
             this.setState({
-                url: tabs[0].url,
-                title: tabs[0].title
+                url: url,
+                title: title
             });
-            BookmarksService.isExist(tabs[0].url, function (res) {
+            BookmarksService.isExist(url, function (res) {
                 console.log("isExist", res.bookmark);
                 if (res.bookmark !== null) {
                     this.setState({
@@ -50,13 +54,27 @@ var BookmarkForm = React.createClass({
                 }
             }.bind(this));
         }.bind(this));
+        BookmarksService.getKeywords(function (res) {
+			console.log("BookmarkForm", "CWM", "BookmarksService.getKeywords", res);
+            this.setState({
+                keywordsList: res
+            });
+        }.bind(this));
     },
 
     update: function () {
+        console.log("BookmarkForm", "update", this.refs.url.getDOMNode().value.trim());
         this.setState({
-            url: this.refs.url.getDOMNode().value.trim(),
-            title: this.refs.title.getDOMNode().value.trim(),
-            description: this.refs.description.getDOMNode().value.trim()
+            url: this.refs.url.refs.val.getDOMNode().value.trim(),
+            title: this.refs.title.refs.val.getDOMNode().value.trim(),
+            description: this.refs.description.refs.val.getDOMNode().value.trim()
+        });
+    },
+
+    select: function (value) {
+        console.log("BookmarkForm", "select", "value=", value);
+        this.setState({
+            keyword: value
         });
     },
 
@@ -64,21 +82,21 @@ var BookmarkForm = React.createClass({
         return (
             <div style={styleForm}>
                 <div>{this.state.isExist}</div>
-                <Input ref="url" value={this.state.url} update={this.update} />
-                <Input ref="title" value={this.state.title} update={this.update} />
-                <TextArea ref="description" value={this.state.description} update={this.update} />
-                <BookmarkKeywords />
-                <input type="button" value="Save" style={styleButtonSave} onClick={this.save}/>
+                <Input type="login" ref="url" label="Url" value={this.state.url} update={this.update} />
+                <Input type="text" ref="title" label="Title" value={this.state.title} update={this.update} />
+                <TextArea ref="description" label="Description" value={this.state.description} update={this.update} />
+                <Select ref="keywords" elements={this.state.keywordsList} update={this.select} />
+                <input type="button" value="Save" style={styleButtonSave} onClick={this.save} />
             </div>
         );
     },
 
     save: function () {
         BookmarksService.save({
-            url: this.refs.url.getDOMNode().value.trim(),
-            title: this.refs.title.getDOMNode().value.trim(),
-            description: this.refs.description.getDOMNode().value.trim(),
-            keywords: "A"
+            url: this.refs.url.refs.val.getDOMNode().value.trim(),
+            title: this.refs.title.refs.val.getDOMNode().value.trim(),
+            description: this.refs.description.refs.val.getDOMNode().value.trim(),
+            keywords: this.state.keyword
         }, function (res) {
             console.log("Save res = ", res);
             if (res.error === false) {

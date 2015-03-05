@@ -18,7 +18,7 @@ var App = React.createClass({
 
     componentWillMount: function () {
         BookmarksService.isConnected(function (res) {
-            console.log("isConnected", res);
+            console.log("main.js", "componentWillMount", "BookmarksService.isConnected", res.connected);
             this.setState({
                 isConnected: res.connected
             });
@@ -38,6 +38,7 @@ var App = React.createClass({
 			</div>
         );
     },
+    
     login: function (login, password) {
         console.log("main login", login, "password", password);
         BookmarksService.login({

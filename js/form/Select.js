@@ -11,15 +11,24 @@ var style = {
 var Select = React.createClass({
     render: function () {
         return (
-            <div>
-                <select style={style} onChange={this.props.update}>
+            <div {...this.props}>
+                <select
+                    ref="val"
+                    style={style}
+                    onChange={this.update}>
                     {this.props.elements.map(function (item) {
                         return (
-                            <option value={item}>{item}</option>
+                            <option value={item} key={item}>{item}</option>
                         );
                     })}
                 </select>
             </div>
+        );
+    },
+
+    update: function () {
+        this.props.update(
+            this.refs.val.getDOMNode().value
         );
     }
 });
