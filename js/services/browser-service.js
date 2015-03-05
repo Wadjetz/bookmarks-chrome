@@ -22,10 +22,13 @@ module.exports.getTabInfo = function (callback) {
 };
 
 module.exports.storage = {
-	save: function (key, value, callback) {
-
+	save: function (obj, callback) {
+		chrome.storage.local.set(obj, callback);
 	},
-	get: function (key, callback) {
-
+	get: function (keys, callback) {
+		chrome.storage.local.get(keys, callback);
+	},
+	remove: function(keys, callback) {
+		chrome.storage.local.remove(keys, callback);
 	}
 };

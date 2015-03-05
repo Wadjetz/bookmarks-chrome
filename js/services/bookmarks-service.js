@@ -1,11 +1,31 @@
 var $ = require('jquery');
+var BrowserService = require('./browser-service');
 
 var apiUrl = "http://bookmarks-wadjetz.rhcloud.com";
 //apiUrl = "http://localhost:8888";
 
+var localStorageTimeout = 12344;
+
 module.exports.getBookmarks = function (callback) {
-	$.get(apiUrl + '/api/secure/bookmarks', function(res) {
-		callback(res);
+
+
+	BrowserService.storage.get('last_update', function (items) {
+		console.log('last_update', items);
+	});
+
+	BrowserService.storage.get('bookmarks', function (items) {
+		if ($.isEmptyObject(items)) {
+			$.get(apiUrl + '/api/secure/bookmarks', function(res) {
+				BrowserService.storage.save({ 'bookmarks': res }, function () {
+					BrowserService.storage.save({ 'last_update': Date.now() });
+					console.log("bookmarks from API", res);
+					callback(res);
+				});
+			});
+		} else {
+			console.log("bookmarks from Storage", items);
+			callback(items.bookmarks);
+		}
 	});
 };
 
