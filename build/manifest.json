@@ -5,15 +5,15 @@
 	"description": "Gestionaire de favoris",
 	"icons": {
 		"16"  : "img/icon16.png",
-        "48"  : "img/icon48.png",
-        "128" : "img/icon128.png"
-    },
+    "48"  : "img/icon48.png",
+    "128" : "img/icon128.png"
+  },
 	"permissions": [
-		"tabs",
-		"storage",
-    	"http://bookmarks-wadjetz.rhcloud.com/",
-    	"http://localhost:9000/"
-  	],
+    "tabs",
+    "storage",
+    "http://localhost:9000/",
+    "http://bookmarks.berezovskiy.fr/"
+  ],
 	"browser_action": {
 		"default_icon" : "img/icone.png",
 		"default_popup": "index.html"
