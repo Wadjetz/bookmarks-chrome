@@ -175,7 +175,7 @@ export default React.createClass({
       });
       BookmarksService.isExist(res.url).then(res => {
         console.log("isExist", res);
-        this.setState({ urlExist: true });
+        this.setState({ urlExist: res.exist });
       }, err => {
         this.setState({ urlExist: false });
       });
