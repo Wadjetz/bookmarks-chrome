@@ -22,9 +22,11 @@
     "babelify": "^6.1.0",
     "browserify": "^10.2.0",
     "lodash": "^3.8.0",
+    "q": "^1.4.0",
     "qajax": "^1.2.0",
     "radium": "^0.11.1",
     "react": "^0.13.3",
+    "react-tag-input": "0.0.7",
     "watchify": "^3.2.1"
   }
 }

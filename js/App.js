@@ -1,8 +1,8 @@
-import React from 'react'
-import BrowserService from './services/BrowserService'
-import BookmarksService from './services/BookmarksService'
-import BookmarksForm from './BookmarksForm'
-import Button from './Button'
+import React from 'react';
+import BrowserService from './services/BrowserService';
+import BookmarksService from './services/BookmarksService';
+import BookmarksForm from './BookmarksForm';
+import Button from './Button';
 
 export default React.createClass({
   render: function () {
@@ -29,10 +29,12 @@ export default React.createClass({
 
   componentDidMount: function () {
     BookmarksService.isConnected().then(res => {
+      console.log("isConnected res", res);
       this.setState({
         connected: true
       });
     }, (err => {
+      console.log("isConnected err", err);
       if (err.status === 401) {
         this.setState({
           connected: false

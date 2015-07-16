@@ -1,10 +1,10 @@
-import React from 'react/addons'
-import _ from 'lodash'
-import BookmarksService from './services/BookmarksService'
-import BrowserService from './services/BrowserService'
-import Tag from './Tag'
-import Input from './Input'
-import Button from './Button'
+import React from 'react/addons';
+import _ from 'lodash';
+import BookmarksService from './services/BookmarksService';
+import BrowserService from './services/BrowserService';
+import Tag from './Tag';
+import Input from './Input';
+import Button from './Button';
 
 const KEY_TAB = 9;
 const KEY_ENTER = 13;
@@ -25,6 +25,7 @@ export default React.createClass({
     } else {
       return (
         <div key={"form"}>
+          {(this.state.error !== "") ? <div>Error</div> : null}
           <Input
             name="title"
             errMsg="required"
@@ -39,7 +40,7 @@ export default React.createClass({
             valueLink={this.linkState('url')}
           />
           <Input
-            name="description"
+            name="description#"
             type="textarea"
             valueLink={this.linkState('description')}
           />
@@ -67,11 +68,20 @@ export default React.createClass({
             onChange={this.handleChange}
             onKeyDown={this.onKeyDown}
           />
-          <datalist id="tagslist">
-            {this.state.tagslist.map((tag, i) =>
-              <option key={tag + "-" + i} value={tag} />
-            )}
-          </datalist>
+          <select
+            id="tags"
+            ref="tags"
+            onChange={this.selectAddTag}
+          >
+            {this.state.tagslist.map((tag, i) => {
+              return (
+                <option
+                  key={tag + "-" + i}
+                  value={tag}
+                >{tag}</option>
+              );
+            })}
+          </select>
           <ul className="bookmark-tags">
             {this.state.tags.map(tag => {
               return (
@@ -90,6 +100,13 @@ export default React.createClass({
     }
   },
 
+  selectAddTag: function (e) {
+    this.state.tags.push(event.target.value)
+    this.setState({
+      tags: this.state.tags,
+    });
+  },
+
   onSave: function (e) {
     let newBookmark = {
       title: this.state.title,
@@ -102,10 +119,14 @@ export default React.createClass({
     console.log("Form.onSave", this.state);
     BookmarksService.save(newBookmark).then(res => {
       this.setState({
-        urlExist: true
-      })
+        urlExist: true,
+        error: ""
+      });
     }, err => {
       console.log("onSave", err);
+      this.setState({
+        error: err
+      })
     });
   },
 
@@ -119,7 +140,8 @@ export default React.createClass({
       tags: [],
       tagslist: [],
       addTag: "",
-      urlExist: false
+      urlExist: false,
+      error: ""
     };
   },
 
@@ -154,19 +176,26 @@ export default React.createClass({
 
   componentDidMount: function () {
     BookmarksService.getCategories().then(categories => {
+      console.log('getCategories', categories);
       this.setState({
         categories: categories,
         category: (categories.length > 0) ? categories[0].name : ""
       });
+    }, err => {
+      console.log('getCategories err', err);
     });
 
     BookmarksService.getTags().then(tags => {
+      console.log('getTags', tags);
+      tags.sort(function(a, b){
+        if(a < b) return -1;
+        if(a > b) return 1;
+        return 0;
+      });
       this.setState({
         tagslist: tags
       });
     });
-
-    BookmarksService.is
 
     BrowserService.getTabInfo().then(res => {
       this.setState({

@@ -1,5 +1,5 @@
-import React from 'react/addons'
-import Radium from 'radium'
+import React from 'react/addons';
+import Radium from 'radium';
 
 export default React.createClass(Radium.wrap({
   displayName: "Button",

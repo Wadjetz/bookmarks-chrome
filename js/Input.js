@@ -1,6 +1,6 @@
-import React from 'react/addons'
-import Radium from 'radium'
-import capitalize from 'lodash/string/capitalize'
+import React from 'react/addons';
+import Radium from 'radium';
+import _ from 'lodash';
 
 export default React.createClass(Radium.wrap({
   displayName: "Input",
@@ -9,7 +9,7 @@ export default React.createClass(Radium.wrap({
     let errorView = (this.props.showError)
                 ? <span style={errorStyle}>{this.props.errMsg}</span>
                 : null;
-    let labelView = this.props.label || capitalize(this.props.name);
+    let labelView = this.props.label || _.capitalize(this.props.name);
     return (
       <div style={wrapStyle}>
         <label htmlFor={this.props.name}>
@@ -67,7 +67,7 @@ export default React.createClass(Radium.wrap({
     );
   },
 
-  renderAutocomplete: function () {
+  _renderAutocomplete: function () {
     return (
       <div>
         <input {...this.props}
@@ -81,6 +81,28 @@ export default React.createClass(Radium.wrap({
             <option key={tag + "-" + i} value={tag} />
           )}
         </datalist>
+      </div>
+    );
+  },
+
+  renderAutocomplete: function () {
+    // let tagsMatch = this.props.listData.filter(t => {
+    //   _.startsWith()
+    // });
+    console.log(this);
+    return (
+      <div>
+        <input {...this.props}
+          id={this.props.name}
+          style={inputStyle}
+          type={this.props.type}
+          list={this.props.name + "-tagslist"}
+        />
+        <ul>
+          {this.props.listData.map((tag, i) => {
+             <li key={tag + "-" + i}>{tag}</li>
+          })}
+        </ul>
       </div>
     );
   }
