@@ -25,7 +25,7 @@ export default {
 
   getCategories: function () {
     return Qajax({
-      url: baseUrl + '/categories',
+      url: baseUrl + '/bookmarks/categories',
       method: 'GET'
     })
     .then(Qajax.filterSuccess)
