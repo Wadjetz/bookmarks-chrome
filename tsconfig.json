@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "jsx": "react"
+  },
+  "filesGlob": [
+    "src/**/*.*",
+    "typings/**/*.d.ts"
+  ]
+}

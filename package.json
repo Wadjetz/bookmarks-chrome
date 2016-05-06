@@ -4,8 +4,8 @@
   "description": "Bookmarks Manager",
   "main": "index.js",
   "scripts": {
-    "js-build": "browserify js/main.js -t babelify --outfile build/main.js",
-    "js-watch": "watchify js/main.js -t babelify --outfile build/main.js",
+    "js-build": "webpack -p -v",
+    "js-watch": "webpack -w -v",
     "watch": "npm run js-watch",
     "build": "npm run js-build"
   },
@@ -19,15 +19,21 @@
   "author": "Wadjetz",
   "license": "ISC",
   "dependencies": {
-    "babelify": "^6.1.0",
-    "browserify": "^10.2.0",
-    "lodash": "^3.8.0",
-    "q": "^1.4.0",
-    "qajax": "^1.2.0",
-    "radium": "^0.14.3",
-    "react": "^0.14.2",
-    "react-autocomplete-tags": "https://github.com/Wadjetz/react-autocomplete-tags",
-    "react-dom": "^0.14.2",
-    "watchify": "^3.2.1"
+    "@types/es6-promise": "0.0.32",
+    "@types/react": "^0.14.41",
+    "@types/react-dom": "^0.14.18",
+    "@types/whatwg-fetch": "0.0.32",
+    "@types/whatwg-streams": "0.0.1",
+    "es6-promise": "^4.0.5",
+    "es6-shim": "^0.35.1",
+    "react": "15.3.2",
+    "react-dom": "15.3.2",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "devDependencies": {
+    "ts-loader": "0.9.1",
+    "tslint": "3.15.1",
+    "typescript": "2.0.3",
+    "webpack": "1.13.2"
   }
 }
