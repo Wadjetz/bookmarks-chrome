@@ -4,13 +4,16 @@ import { getCategories, getTags, isExist, saveBookmark } from "./services/Bookma
 import { Bookmark, Category } from "./models"
 import { Tab, getTabInfo } from "./services/BrowserService"
 import BookmarkForm from "./BookmarkForm"
+import Update from "./Update"
 
 interface AppState {
   tab: Tab,
   bookmark: Bookmark
+  updateBookamrk?: Bookmark
   categories: Category[]
   allTags: string[]
   isExist: boolean
+  update: boolean
 }
 
 export default class App extends React.Component<void, AppState> {
@@ -31,7 +34,8 @@ export default class App extends React.Component<void, AppState> {
       },
       categories: [],
       allTags: [],
-      isExist: false
+      isExist: false,
+      update: false
     }
   }
 
@@ -57,6 +61,7 @@ export default class App extends React.Component<void, AppState> {
         }
       }))
       isExist(tab.url).then(exist => {
+        console.log("isExist", tab.url, exist)
         this.setState(update(this.state, {
           isExist: exist.exist
         }))
@@ -65,16 +70,19 @@ export default class App extends React.Component<void, AppState> {
   }
 
   render() {
-    console.log("App", this.state)
-    const { bookmark, allTags, categories, isExist } = this.state
+    const { bookmark, updateBookamrk, allTags, categories, isExist } = this.state
     return (
       <div className="main">
         {isExist
-          ? <h1>Already Saved</h1>
+          ? <Update onUpdate={this.handleOnUpdate} bookmark={updateBookamrk} />
           : <BookmarkForm bookmark={bookmark} allTags={allTags} categories={categories} onChange={this.handleOnChange} onSubmit={this.handleOnSubmit} />
         }
       </div>
     )
+  }
+
+  handleOnUpdate = () => {
+    
   }
 
   handleOnChange = (bookmark: Bookmark) => {
