@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Wadjetz Bookmarks",
-	"version": "1.0",
+	"version": "0.0.1",
 	"description": "Gestionaire de favoris",
 	"icons": {
 		"16"  : "img/icon16.png",

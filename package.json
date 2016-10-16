@@ -1,6 +1,6 @@
 {
   "name": "bookmarks-chrome",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Bookmarks Manager",
   "main": "index.js",
   "scripts": {
