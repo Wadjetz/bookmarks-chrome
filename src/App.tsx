@@ -3,6 +3,7 @@ import update from "immupdate"
 import { getCategories, getTags, isExist, saveBookmark } from "./services/BookmarksService"
 import { Bookmark, Category } from "./models"
 import { Tab, getTabInfo } from "./services/BrowserService"
+import { extractTags } from "./services/TagsExtractor"
 import BookmarkForm from "./BookmarkForm"
 import Update from "./Update"
 
@@ -46,22 +47,23 @@ export default class App extends React.Component<void, AppState> {
       }))
     })
 
-    getTags().then(allTags => {
-      this.setState(update(this.state, {
-        allTags: allTags
-      }))
-    })
-
     getTabInfo().then(tab => {
-      this.setState(update(this.state, {
-        tab: tab,
-        bookmark: {
-          title: tab.title,
-          url: tab.url
-        }
-      }))
+      getTags().then(allTags => {
+        this.setState(update(this.state, {
+          allTags: allTags
+        }))
+
+        this.setState(update(this.state, {
+          tab: tab,
+          bookmark: {
+            title: tab.title,
+            url: tab.url,
+            tags: extractTags(allTags, tab.title, tab.url)
+          }
+        }))
+      })
+
       isExist(tab.url).then(exist => {
-        console.log("isExist", tab.url, exist)
         this.setState(update(this.state, {
           isExist: exist.exist
         }))
